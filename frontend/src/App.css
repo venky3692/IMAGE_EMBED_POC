@@ -1,0 +1,22 @@
+html{
+  background-color: #baf4f4;
+}
+
+.dropbox-container {
+  border: 2px dashed gray;
+  border-radius: 10px;
+  display: flex;
+  width: 40%;
+  justify-content: center;
+  margin: 200px auto 0;
+  height: 300px;
+  background: url(../public/photo-icons.png) no-repeat;
+  background-size: 200px;
+  background-position: center;
+}
+
+.dropbox-container p {
+  margin-top: 250px;
+  font-size: large;
+  font-weight: bold;
+}

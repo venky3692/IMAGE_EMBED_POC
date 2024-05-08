@@ -14,7 +14,7 @@ function App() {
       .then(response => {
         setIsProcessing(false);
         console.log(response.data);
-        setMessage({success:'File uploaded successfully'});
+        setMessage({success: `Similarity score: ${response.data.similarity_score}`});
       })
       .catch(error => {
         setIsProcessing(false);
@@ -26,6 +26,10 @@ function App() {
 
   return (
     <>
+    <div className='title-bar'>
+      <img src="/photo-icons.png" alt="App Logo" className="logo" />
+      <h1 className="app-name">Trademark Infringement Detection</h1>
+    </div>
     <div className='dropbox-container'>
     <div {...getRootProps()}>
       <input {...getInputProps()} />

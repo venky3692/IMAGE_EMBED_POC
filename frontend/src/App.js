@@ -28,7 +28,7 @@ function App() {
     <>
     <div className='title-bar'>
       <img src="/photo-icons.png" alt="App Logo" className="logo" />
-      <h1 className="app-name">Logo Image Authenticator</h1>
+      <h1 className="app-name">Trademark Infringement Detection</h1>
     </div>
     <div className='dropbox-container'>
     <div {...getRootProps()}>

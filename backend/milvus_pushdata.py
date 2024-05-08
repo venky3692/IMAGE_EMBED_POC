@@ -27,5 +27,19 @@ class push:
                 embedding_list.clear()
                 image_name_list.clear()
 
+            index_params = {
+            'metric_type':'COSINE',
+            'index_type':"FLAT",
+            'params':{"nlist":15}
+        }
+
+            self.collection.create_index(field_name="embeddings", index_params=index_params)
+
+    def size_of_collection(self):
+        print('size of collection', self.collection.num_entities)
+        print('is empty', self.collection.is_empty) 
 
 
+obj = push()
+obj.push_data_to_milvus()
+obj.size_of_collection()

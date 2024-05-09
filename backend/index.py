@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 from flask_cors import CORS
-from image_comparison import image_comparison_and_embedder
+from image_comparison import img_comparison
 app = Flask(__name__)
 CORS(app)
 
@@ -28,8 +28,11 @@ def upload_image():
         filename = file.filename
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        similarity_score = image_comparison_and_embedder(file_path)
-        return jsonify({'message': 'File successfully uploaded', 'filename': filename, 'similarity_score': similarity_score})
+        comparison_obj = img_comparison()
+        similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
+        #similarity_score = image_comparison_and_embedder(file_path)
+        return jsonify({'message': 'File successfully uploaded', 'filename': filename, 'similarity_score': cosine_similarity,
+                        'similar_image_name': image_name})
 
 if __name__ == '__main__':
     app.run(port=5000)

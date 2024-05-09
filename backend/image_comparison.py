@@ -6,14 +6,17 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 # Create options for Image Embedder
 
+
 class img_comparison:
     def __init__(self):
         connections.connect(host="localhost", port=19530)
         self.collection = Collection("IMAGE_EMBEDDINGS")
 
     def image_comparison_and_embedder(self,user_image_path):
-        connections.connect(host="localhost", port=19530)
-        self.collection = Collection("IMAGE_EMBEDDINGS")
+        #connections.connect(host="localhost", port=19530)
+        #self.collection = Collection("IMAGE_EMBEDDINGS")
+        self.collection.load()
+        print("collection loaded!")
         base_options = python.BaseOptions(model_asset_path='embedder.tflite')
         l2_normalize = True #@param {type:"boolean"}
         quantize = True #@param {type:"boolean"}
@@ -34,13 +37,16 @@ class img_comparison:
 
 
             # Calculate and print similarity
-            similar_image, image_name = self.collection.search(data= [get_final_embedding], anns_field="embeddings", param={"metric":"COSINE","offset":0},
+            similarity_search = self.collection.search(data= [get_final_embedding], anns_field="embeddings", param={"metric":"COSINE","offset":0},
                                           output_fields=["embeddings", "image_name"],limit=1, consistency_level="Strong" )
-            
-            get_cosine_similarity = cosine_similarity([similar_image], [user_image_path])
+            similarity_score = None
+            for hits in similarity_search:
+                similarity_score = hits[0].distance
+            #get_cosine_similarity = cosine_similarity([similar_image], [user_image_path])
             #similarity = vision.ImageEmbedder.cosine_similarity(
             #    first_embedding_result.embeddings[0],
             #    second_embedding_result.embeddings[0])
 
-        return similar_image, image_name, get_cosine_similarity
+        return similarity_score
+        #return similar_image, image_name, get_cosine_similarity
 

@@ -42,5 +42,5 @@ class push:
 
 
 obj = push()
-obj.push_data_to_milvus()
+#obj.push_data_to_milvus()
 obj.size_of_collection()

@@ -29,10 +29,9 @@ def upload_image():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
         comparison_obj = img_comparison()
-        similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
-        #similarity_score = image_comparison_and_embedder(file_path)
-        return jsonify({'message': 'File successfully uploaded', 'filename': filename, 'similarity_score': cosine_similarity,
-                        'similar_image_name': image_name})
+        #similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
+        similarity_score = comparison_obj.image_comparison_and_embedder(file_path)
+        return jsonify({'message': 'File successfully uploaded', 'filename': filename, 'similarity_score': similarity_score})
 
 if __name__ == '__main__':
     app.run(port=5000)

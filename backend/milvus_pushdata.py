@@ -7,6 +7,7 @@ import os
 class push:
     def __init__(self):
         self.image_path = "/home/ubuntu/DPIIT/logos/"
+        connections.connect(host="localhost", port=19530)
         self.collection = Collection("IMAGE_EMBEDDINGS")
         self.base_options = python.BaseOptions(model_asset_path='embedder.tflite')
         self.l2_normalize = True #@param {type:"boolean"}

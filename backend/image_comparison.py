@@ -1,4 +1,5 @@
 import mediapipe as mp
+import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from pymilvus import connections, Collection
 from mediapipe.tasks import python
@@ -23,6 +24,7 @@ class img_comparison:
         # Format images for MediaPipe
             #first_image = mp.Image.create_from_file('/home/venkatesh/Desktop/hwd.png')
             user_image = mp.Image.create_from_file(user_image_path)
+            user_image = user_image.astype(np.float32)
             #first_embedding_result = embedder.embed(first_image)
             embedding_result = embedder.embed(user_image)
             get_final_embedding = embedding_result.embeddings[0].embedding

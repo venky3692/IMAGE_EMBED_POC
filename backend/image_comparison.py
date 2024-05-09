@@ -24,10 +24,12 @@ class img_comparison:
         # Format images for MediaPipe
             #first_image = mp.Image.create_from_file('/home/venkatesh/Desktop/hwd.png')
             user_image = mp.Image.create_from_file(user_image_path)
-            user_image = user_image.astype(np.float32)
+            
             #first_embedding_result = embedder.embed(first_image)
             embedding_result = embedder.embed(user_image)
             get_final_embedding = embedding_result.embeddings[0].embedding
+            get_final_embedding = get_final_embedding.astype(np.float32)
+
 
             # Calculate and print similarity
             similar_image, image_name = self.collection.search(data= [get_final_embedding], anns_field="embeddings", param={"metric":"COSINE","offset":0},

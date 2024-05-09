@@ -12,6 +12,7 @@ class img_comparison:
         self.collection = Collection("IMAGE_EMBEDDINGS")
 
     def image_comparison_and_embedder(self,user_image_path):
+        self.collection = Collection("IMAGE_EMBEDDINGS")
         base_options = python.BaseOptions(model_asset_path='embedder.tflite')
         l2_normalize = True #@param {type:"boolean"}
         quantize = True #@param {type:"boolean"}

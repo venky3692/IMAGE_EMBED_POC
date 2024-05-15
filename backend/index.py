@@ -32,9 +32,9 @@ def upload_image():
         comparison_obj = img_comparison()
         #similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
         similarity_score = comparison_obj.image_comparison_and_embedder(file_path)
-        # compare_file_path = os.path.join('data_set/original', )
-        # color_similarity = compare_color_similarity(file_path, compare_file_path)
-        return jsonify({'message': 'File successfully uploaded', 'filename': filename, 'similarity_score': similarity_score})
+        compare_file_path = os.path.join('../data_set/original', similarity_score.entity.image_name)
+        color_similarity = compare_color_similarity(file_path, compare_file_path)
+        return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 'similarity_score': (similarity_score.distance)*100, 'color_similarity': (color_similarity)*100})
 
 if __name__ == '__main__':
     app.run(port=5000)

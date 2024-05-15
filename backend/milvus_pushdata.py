@@ -3,10 +3,11 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import os
+import numpy as np
 
 class push:
     def __init__(self):
-        self.image_path = "/home/ubuntu/DPIIT/logos/"
+        self.image_path = "/home/sanjayvijaykumar/Documents/IMAGE_EMBED_POC/data_set/original/"
         connections.connect(host="localhost", port=19530)
         print(utility.list_collections(timeout=None))
         self.collection = Collection("IMAGE_EMBEDDINGS")
@@ -22,8 +23,13 @@ class push:
             image_name_list = []
             for image in os.listdir(self.image_path):
                 image_name = image.split('/')[-1]
-                embedding = embedder.embed(image)
-                embedding_list.append(embedding.embeddings[0].embedding)
+                img = mp.Image.create_from_file(self.image_path+image_name);
+                print("image", img)
+                embedding = embedder.embed(img)
+                print("embedding", embedding)
+                float_embedding = embedding.embeddings[0].embedding.astype(np.float32)
+                # embedding_list.append(embedding.embeddings[0].embedding)
+                embedding_list.append(float_embedding)
                 image_name_list.append(image_name)
                 self.collection.insert([embedding_list, image_name_list])
                 embedding_list.clear()
@@ -43,5 +49,5 @@ class push:
 
 
 obj = push()
-#obj.push_data_to_milvus()
+# obj.push_data_to_milvus()
 obj.size_of_collection()

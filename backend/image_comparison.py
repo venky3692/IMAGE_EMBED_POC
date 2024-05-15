@@ -41,7 +41,7 @@ class img_comparison:
                                           output_fields=["embeddings", "image_name"],limit=1, consistency_level="Strong" )
             similarity_score = None
             for hits in similarity_search:
-                similarity_score = hits[0].distance
+                similarity_score = hits[0]
             #get_cosine_similarity = cosine_similarity([similar_image], [user_image_path])
             #similarity = vision.ImageEmbedder.cosine_similarity(
             #    first_embedding_result.embeddings[0],

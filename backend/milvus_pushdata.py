@@ -1,4 +1,4 @@
-from pymilvus import connections, Collection
+from pymilvus import connections, Collection, utility
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
@@ -8,6 +8,7 @@ class push:
     def __init__(self):
         self.image_path = "/home/ubuntu/DPIIT/logos/"
         connections.connect(host="localhost", port=19530)
+        print(utility.list_collections(timeout=None))
         self.collection = Collection("IMAGE_EMBEDDINGS")
         self.base_options = python.BaseOptions(model_asset_path='embedder.tflite')
         self.l2_normalize = True #@param {type:"boolean"}

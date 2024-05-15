@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import os
 from flask_cors import CORS
 from image_comparison import img_comparison
+from color_comparison import compare_color_similarity
 app = Flask(__name__)
 CORS(app)
 
@@ -31,6 +32,8 @@ def upload_image():
         comparison_obj = img_comparison()
         #similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
         similarity_score = comparison_obj.image_comparison_and_embedder(file_path)
+        # compare_file_path = os.path.join('data_set/original', )
+        # color_similarity = compare_color_similarity(file_path, compare_file_path)
         return jsonify({'message': 'File successfully uploaded', 'filename': filename, 'similarity_score': similarity_score})
 
 if __name__ == '__main__':

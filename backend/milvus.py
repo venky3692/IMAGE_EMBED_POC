@@ -22,11 +22,12 @@ class milvus:
 
         self.image_name = FieldSchema(
             name = 'image_name',
-            dtype= DataType.VARCHAR
+            dtype= DataType.VARCHAR,
+            max_length = 65535
         )
 
         schema_for_collection = CollectionSchema(
-            fields= [self.document_id, self.metadata, self.embeddings, self.image_name],
+            fields= [self.document_id, self.embeddings, self.image_name],
             enable_dynamic_field = True
         )
 
@@ -35,3 +36,4 @@ class milvus:
         return data_collection
 
 obj = milvus()
+obj.make_schema_and_collection()

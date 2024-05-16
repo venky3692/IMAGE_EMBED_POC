@@ -4,6 +4,7 @@ from flask_cors import CORS
 from image_comparison import img_comparison
 from color_comparison import compare_color_similarity
 from dominating_color import dominating_color
+from text_extraction import extraction_of_text
 app = Flask(__name__)
 CORS(app)
 
@@ -34,9 +35,14 @@ def upload_image():
         #similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
         similarity_score = comparison_obj.image_comparison_and_embedder(file_path)
         compare_file_path = os.path.join('../data_set/original', similarity_score.entity.image_name)
-        color_similarity = compare_color_similarity(file_path, compare_file_path)
+        # color_similarity = compare_color_similarity(file_path, compare_file_path)
         dominating_color_similarity = dominating_color(file_path, compare_file_path)
-        return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 'similarity_score': (similarity_score.distance)*100, 'color_similarity': (color_similarity)*100, 'dominating_color_similarity': (dominating_color_similarity)*100})
+        orig_text_extracted, fake_text_extracted = extraction_of_text(file_path, compare_file_path)
+        return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 
+                        'similarity_score': (similarity_score.distance)*100, 
+                        'dominating_color_similarity': (dominating_color_similarity)*100,
+                        'original image text': orig_text_extracted,
+                        'fake image text': fake_text_extracted})
 
 if __name__ == '__main__':
     app.run(port=5000)

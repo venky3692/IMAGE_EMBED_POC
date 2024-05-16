@@ -2,21 +2,42 @@ html{
   background-color: #baf4f4;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 20px;
+  width: 70%;
+  height: 100%;
+  margin: 50px auto;
+  padding: 100px 20px;
+  background-color: aliceblue;
+
+}
+
+.result-container {
+  background-color: whitesmoke;
+  width: 50%;
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 5px;
+}
+
 .dropbox-container {
   border: 2px dashed gray;
   border-radius: 10px;
   display: flex;
-  width: 40%;
+  width: 70%;
   justify-content: center;
-  margin: 200px auto 0;
-  height: 300px;
-  background: url(../public/photo-icons.png) no-repeat;
+  margin: 0 20px;
+  height: 500px;
+  background: url(../public/photo-icons.png) no-repeat, whitesmoke;
   background-size: 200px;
   background-position: center;
 }
 
 .dropbox-container p {
-  margin-top: 250px;
+  margin-top: 450px;
   font-size: large;
   font-weight: bold;
 }
@@ -60,4 +81,24 @@ html{
 .app-name {
   font-size: 24px;
   margin: 0;
+}
+
+.image-card {
+  display: flex;
+  margin: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.color-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color-box {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

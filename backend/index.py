@@ -5,6 +5,7 @@ from image_comparison import img_comparison
 from color_comparison import compare_color_similarity
 from dominating_color import dominating_color
 from text_extraction import extraction_of_text
+import base64
 app = Flask(__name__)
 CORS(app)
 
@@ -38,11 +39,18 @@ def upload_image():
         # color_similarity = compare_color_similarity(file_path, compare_file_path)
         dominating_color_similarity = dominating_color(file_path, compare_file_path)
         orig_text_extracted, fake_text_extracted = extraction_of_text(file_path, compare_file_path)
+        common_dom_colors = [[float(num) for num in item[0].tolist()] for item in dominating_color_similarity[1]]
+        print("common_dom_colors", common_dom_colors)
+        with open(compare_file_path, 'rb') as f:
+            image_data = f.read()
+        
+        # Convert the image data to base64
+        image_base64 = base64.b64encode(image_data).decode('utf-8')
         return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 
                         'similarity_score': (similarity_score.distance)*100, 
-                        'dominating_color_similarity': (dominating_color_similarity)*100,
+                        'dominating_color_similarity': (dominating_color_similarity[0])*100,
                         'original image text': orig_text_extracted,
-                        'fake image text': fake_text_extracted})
+                        'fake image text': fake_text_extracted, 'imageData': image_base64, 'matching_colors':common_dom_colors,})
 
 if __name__ == '__main__':
     app.run(port=5000)

@@ -63,7 +63,7 @@ def display_dominant_colors(dominant_colors, idx):
     cv2.imwrite("Dominant Colors"+idx+".png", bar)
 
 def dominating_color(image_path, image_path1):
-    num_colors = 3
+    num_colors = 5
 
     image = cv2.imread(image_path)
 
@@ -90,4 +90,4 @@ def dominating_color(image_path, image_path1):
     #     except ValueError:
     #         closest_name = None
     #     print("colorname", closest_name)
-    return dominating_color_percent
+    return dominating_color_percent, colors_same

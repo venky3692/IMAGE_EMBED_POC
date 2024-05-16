@@ -11,13 +11,14 @@ function App() {
     console.log(URL.createObjectURL(acceptedFiles[0]))
     setImageData(URL.createObjectURL(acceptedFiles[0]))
     setIsProcessing(true);
+    setMessage('');
     const formData = new FormData();
     formData.append('file', acceptedFiles[0]);
     axios.post('http://localhost:5000/upload', formData)
       .then(response => {
         setIsProcessing(false);
         console.log(response.data);
-        setMessage({success: `Similarity score: ${response.data.similarity_score}%`, matching_image: response.data.imageData, matching_colors: response.data.matching_colors, dominating_color_similarity: response.data.dominating_color_similarity});
+        setMessage({success: `Similarity score: ${response.data.similarity_score.toFixed(2)}%`, matching_image: response.data.imageData, matching_colors: response.data.matching_colors, dominating_color_similarity: response.data.dominating_color_similarity});
       })
       .catch(error => {
         setIsProcessing(false);
@@ -45,23 +46,22 @@ function App() {
     </div>
     </div>
     <div className='result-container'>
-    {!isProcessing && <div>
+    {message && !isProcessing &&<div>
+     <div>
         <p>Uploaded logo:</p>
-      </div>}
-      {!isProcessing && <div id="image-card" class="image-card">
+      </div>
+      <div id="image-card" class="image-card">
         <img id="image" class="result-image" src={imageUploaded} alt=""></img>
-      </div>}
+      </div>
     <p>Result</p>
     <div className='progress-bar'>
     {message.success && !isProcessing && <p style={{color:'green'}}>{message.success}</p>}
-    {message.success && !isProcessing && <p style={{color:'green'}}>Similarity of color combination: {message.dominating_color_similarity}</p>}
     {message.error && !isProcessing && <p style={{color:'red'}}>{message.error}</p>}
-    {isProcessing && <div class="loader"></div>}
     </div>
-      {!isProcessing && <div>
+      <div>
         <p>Matching logo:</p>
-      </div>}
-      {!isProcessing && <div id="image-card" class="image-card">
+      </div>
+      <div id="image-card" class="image-card">
         <img id="image" class="result-image" src={`data:image/jpeg;base64, ${message.matching_image}`} alt=""></img>
         <div><p>Common dominating colors:</p></div>
         <div className="color-list">
@@ -73,7 +73,15 @@ function App() {
         ></div>
       ))}
     </div>
-      </div>}
+      </div>
+      <ul>
+      <li>Similarity of color combination: {message.dominating_color_similarity}%</li>
+      <li>Text used in logo uploaded: </li>
+      <li>Text used in logo matched: </li>
+      </ul>
+    </div>}
+    {!message && <p style={{color:'gray', textAlign:'center'}}>Yours processed results will appear here</p>}
+    {isProcessing && <div class="loader"></div>}
     </div>
     </div>
     </>

@@ -3,6 +3,7 @@ import os
 from flask_cors import CORS
 from image_comparison import img_comparison
 from color_comparison import compare_color_similarity
+from dominating_color import dominating_color
 app = Flask(__name__)
 CORS(app)
 
@@ -34,7 +35,8 @@ def upload_image():
         similarity_score = comparison_obj.image_comparison_and_embedder(file_path)
         compare_file_path = os.path.join('../data_set/original', similarity_score.entity.image_name)
         color_similarity = compare_color_similarity(file_path, compare_file_path)
-        return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 'similarity_score': (similarity_score.distance)*100, 'color_similarity': (color_similarity)*100})
+        dominating_color_similarity = dominating_color(file_path, compare_file_path)
+        return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 'similarity_score': (similarity_score.distance)*100, 'color_similarity': (color_similarity)*100, 'dominating_color_similarity': (dominating_color_similarity)*100})
 
 if __name__ == '__main__':
     app.run(port=5000)

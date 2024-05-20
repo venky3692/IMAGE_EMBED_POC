@@ -18,7 +18,8 @@ function App() {
       .then(response => {
         setIsProcessing(false);
         console.log(response.data);
-        setMessage({success: `Similarity score: ${response.data.similarity_score.toFixed(2)}%`, matching_image: response.data.imageData, matching_colors: response.data.matching_colors, dominating_color_similarity: response.data.dominating_color_similarity});
+        setMessage({success: `Total Similarity score: ${response.data.similarity_score.toFixed(2)}% \n Text Similarity: ${response.data.text_similarity_score.toFixed(2)}%`, matching_image: response.data.imageData, matching_colors: response.data.matching_colors, dominating_color_similarity: response.data.dominating_color_similarity, 
+        matching_image_text: response.data.matching_image_text, uploaded_image_text: response.data.uploaded_image_text, text_matching_image: response.data.imageData2});
       })
       .catch(error => {
         setIsProcessing(false);
@@ -73,11 +74,17 @@ function App() {
         ></div>
       ))}
     </div>
+    <div>
+        <p>Text matching logo:</p>
+      </div>
+      <div id="image-card" class="image-card">
+        <img id="image" class="result-image" src={`data:image/jpeg;base64, ${message.text_matching_image}`} alt=""></img>
+      </div>
       </div>
       <ul>
       <li>Similarity of color combination: {message.dominating_color_similarity}%</li>
-      <li>Text used in logo uploaded: </li>
-      <li>Text used in logo matched: </li>
+      <li>Text used in logo uploaded: {message.uploaded_image_text}</li>
+      <li>Text used in logo matched: {message.matching_image_text}</li>
       </ul>
     </div>}
     {!message && <p style={{color:'gray', textAlign:'center'}}>Yours processed results will appear here</p>}

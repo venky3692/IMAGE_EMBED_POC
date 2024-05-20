@@ -7,7 +7,7 @@ import numpy as np
 
 class push_image:
     def __init__(self):
-        self.image_path = "/home/sanjayvijaykumar/Documents/IMAGE_EMBED_POC/data_set/original/"
+        self.image_path = "/home/sanjayvijaykumar/Documents/IMAGE_EMBED_POC/data_set/text_test/"
         connections.connect(host="localhost", port=19530)
         print(utility.list_collections(timeout=None))
         self.collection = Collection("IMAGE_EMBEDDINGS")
@@ -58,5 +58,5 @@ class push_image:
 
 
 obj = push_image()
-# obj.push_data_to_milvus()
+obj.push_image_data_to_milvus()
 obj.size_of_collection()

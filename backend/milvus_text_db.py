@@ -4,7 +4,9 @@ from pymilvus import utility
 class milvus_image:
     def __init__(self):
         connections.connect(host="localhost", port=19530)
-        print('connected')
+        # data_collection = Collection(name= "TEXT_EMBEDDINGS")
+        # data_collection.drop();
+        print('connected', utility.list_collections(timeout=None))
 
     def make_schema_and_collection(self):
         self.document_id = FieldSchema(
@@ -26,8 +28,14 @@ class milvus_image:
             max_length = 65535
         )
 
+        self.image_name = FieldSchema(
+            name = 'image_name',
+            dtype= DataType.VARCHAR,
+            max_length = 65535
+        )
+
         schema_for_collection = CollectionSchema(
-            fields= [self.document_id, self.embeddings, self.extracted_text],
+            fields= [self.document_id, self.embeddings, self.extracted_text, self.image_name],
             enable_dynamic_field = True
         )
 

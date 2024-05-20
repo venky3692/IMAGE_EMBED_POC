@@ -4,6 +4,8 @@ from pymilvus import utility
 class milvus_image:
     def __init__(self):
         connections.connect(host="localhost", port=19530)
+        # data_collection = Collection(name= "IMAGE_EMBEDDINGS")
+        # data_collection.drop()
         print('connected')
 
     def make_schema_and_collection(self):

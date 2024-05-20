@@ -16,7 +16,7 @@ class comparison:
     def image_comparison_and_embedder(self,user_image_path):
         #connections.connect(host="localhost", port=19530)
         #self.collection = Collection("IMAGE_EMBEDDINGS")
-        #self.collection.load()
+        self.img_collection.load()
         #print("collection loaded!")
         base_options = python.BaseOptions(model_asset_path='embedder.tflite')
         l2_normalize = True #@param {type:"boolean"}
@@ -38,7 +38,7 @@ class comparison:
 
 
             # Calculate and print similarity
-            similarity_search = self.collection.search(data= [get_final_embedding], anns_field="embeddings", param={"metric":"COSINE","offset":0},
+            similarity_search = self.img_collection.search(data= [get_final_embedding], anns_field="embeddings", param={"metric":"COSINE","offset":0},
                                           output_fields=["embeddings", "image_name"],limit=1, consistency_level="Strong" )
             similarity_score = None
             for hits in similarity_search:
@@ -52,6 +52,7 @@ class comparison:
         #return similar_image, image_name, get_cosine_similarity
 
     def text_comparison_and_embedder(self,user_image_path):
+        self.text_collection.load()
         BaseOptions = mp.tasks.BaseOptions
         TextEmbedder = mp.tasks.text.TextEmbedder
         TextEmbedderOptions = mp.tasks.text.TextEmbedderOptions
@@ -63,13 +64,23 @@ class comparison:
         self.text_embedder = TextEmbedder.create_from_options(options)
 
         get_text = extraction_of_text(user_image_path)
-        extracted_text = self.text_embedder.embedd(get_text)
+        extracted_text = self.text_embedder.embed(get_text)
+        get_finaltext_embedding = extracted_text.embeddings[0].embedding
+        get_finaltext_embedding = get_finaltext_embedding.astype(np.float32)
+        num_to_pad = 1024 - len(get_finaltext_embedding) % 1024
 
-        similarity_search = self.collection.search(data= [extracted_text], anns_field="embeddings", param={"metric":"COSINE","offset":0},
-                                          output_fields=["embeddings", "extracted_text"],limit=1, consistency_level="Strong" )
+        # Pad the original data with zeros
+        padded_data = np.concatenate((get_finaltext_embedding, np.zeros(num_to_pad)))
 
+        text_similarity_search = self.text_collection.search(data= [padded_data], anns_field="embeddings", param={"metric":"COSINE","offset":0},
+                                          output_fields=["embeddings", "extracted_text", "image_name"],limit=1, consistency_level="Strong" )
+
+        print("text_similarity_search", text_similarity_search)
         get_image = self.image_comparison_and_embedder(user_image_path)
+        get_text_image = None
+        for hits in text_similarity_search:
+            get_text_image = hits[0]
 
 
-        return get_image
+        return get_image, get_text_image, get_text;
 

@@ -19,7 +19,7 @@ class milvus_image:
         self.embeddings = FieldSchema(
             name= 'embeddings', 
             dtype = DataType.FLOAT_VECTOR,
-            dim = 1024
+            dim = 768
         )
 
         self.image_name = FieldSchema(

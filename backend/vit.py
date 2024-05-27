@@ -2,6 +2,7 @@ from transformers import ViTFeatureExtractor, ViTModel
 import torch
 from PIL import Image
 from image_similarity_measures.quality_metrics import rmse, psnr, ssim, fsim, issm, sre, sam, uiq
+import os;
 
 # Load the feature extractor and the model
 feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
@@ -11,7 +12,11 @@ model = ViTModel.from_pretrained('google/vit-base-patch16-224')
 def get_embeddings(image_paths):
 
 	# Assuming you have a list of images
-	images = [Image.open(image_path) for image_path in image_paths]
+	# for img in os.listdir()
+	for image_path in image_paths:
+		print("imagepath", image_path);
+	images = [Image.open(image_path).convert('RGB') for image_path in image_paths]
+	print("images", images[0]);
 
 	# Preprocess all images
 	inputs = feature_extractor(images=images, return_tensors="pt")
@@ -21,7 +26,7 @@ def get_embeddings(image_paths):
     		outputs = model(**inputs)
 
 	# Get the embeddings
-	embeddings = outputs.last_hidden_state
+	embeddings = outputs.last_hidden_state.squeeze(0).mean(dim=0).numpy()
 	print(f"Embedding shape in the current batch size: {embeddings.shape}")  # (batch_size, seq_len, hidden_size)
 	
 	return embeddings
@@ -44,5 +49,4 @@ def compute_similarity(embedding1, embedding2, metric="rmse"):
 		return	sam(org_img=embedding1.numpy(), pred_img=embedding2.numpy())
 	if metric == "uiq":
 		return	uiq(org_img=embedding1.numpy(), pred_img=embedding2.numpy())
-
 

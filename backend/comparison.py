@@ -5,6 +5,7 @@ from text_extraction import extraction_of_text
 from pymilvus import connections, Collection
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+import vit as v
 # Create options for Image Embedder
 
 class comparison:
@@ -12,6 +13,17 @@ class comparison:
         connections.connect(host="localhost", port=19530)
         self.img_collection = Collection("IMAGE_EMBEDDINGS")
         self.text_collection = Collection("TEXT_EMBEDDINGS")
+
+    def image_comparison_and_embedder_vit(self,user_image_path):
+        self.img_collection.load();
+        get_final_embedding = v.get_embeddings([user_image_path])
+        similarity_search = self.img_collection.search(data= [get_final_embedding], anns_field="embeddings", param={"metric":"COSINE","offset":0},
+                                          output_fields=["embeddings", "image_name"],limit=1, consistency_level="Strong" )
+        similarity_score = None
+        for hits in similarity_search:
+            similarity_score = hits[0]
+
+        return similarity_score
     
     def image_comparison_and_embedder(self,user_image_path):
         #connections.connect(host="localhost", port=19530)
@@ -76,7 +88,7 @@ class comparison:
                                           output_fields=["embeddings", "extracted_text", "image_name"],limit=1, consistency_level="Strong" )
 
         print("text_similarity_search", text_similarity_search)
-        get_image = self.image_comparison_and_embedder(user_image_path)
+        get_image = self.image_comparison_and_embedder_vit(user_image_path)
         get_text_image = None
         for hits in text_similarity_search:
             get_text_image = hits[0]

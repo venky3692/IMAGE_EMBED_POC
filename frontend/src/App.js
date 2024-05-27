@@ -32,8 +32,11 @@ function App() {
   return (
     <>
     <div className='title-bar'>
-      <img src="/photo-icons.png" alt="App Logo" className="logo" />
-      <h1 className="app-name">Trademark Infringement Detection</h1>
+    <span class="material-symbols-outlined">
+image_search
+</span>
+      {/* <img src="/photo-icons.png" alt="App Logo" className="logo" /> */}
+      <h1 className="app-name" data-text="Trademark Infringement Detection">Trademark Infringement Detection</h1>
     </div>
     <div class="container">
     <div className='dropbox-container'>

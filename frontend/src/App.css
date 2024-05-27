@@ -1,18 +1,24 @@
 html{
-  background-color: #baf4f4;
+  background-color: rgb(238, 226, 187);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  /* background: url(../public/add-image-photo-icon.png) repeat ;
+  background-size: 50px; */
 }
 
 .container {
   display: flex;
   justify-content: center;
-  border: 2px solid black;
+  border: 2px outset black;
   border-radius: 20px;
   width: 70%;
   height: 100%;
   margin: 50px auto;
   padding: 100px 20px;
   background-color: aliceblue;
-
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
 }
 
 .result-container {
@@ -31,8 +37,22 @@ html{
   justify-content: center;
   margin: 0 20px;
   height: 500px;
-  background: url(../public/photo-icons.png) no-repeat, whitesmoke;
-  background-size: 200px;
+  background: url(../public/add-image-photo-icon.png) no-repeat, whitesmoke;
+  background-size: 150px;
+  background-position: center;
+  transition: background-image 0.3s;
+}
+
+.dropbox-container:hover {
+  border: 3px dashed rgb(0, 183, 255);
+  background: url(../public/export-image-photo-icon.png) no-repeat, whitesmoke;
+  border-radius: 10px;
+  display: flex;
+  width: 70%;
+  justify-content: center;
+  margin: 0 20px;
+  height: 500px;
+  background-size: 150px;
   background-position: center;
 }
 
@@ -69,8 +89,8 @@ html{
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #333;
-  color: #fff;
+  background-color: #111010;
+  color: whitesmoke;
 }
 
 .logo {
@@ -80,8 +100,9 @@ html{
 }
 
 .app-name {
-  font-size: 24px;
+  font-size: 28px;
   margin: 0;
+  text-shadow: -1px 3px 4px rgba(189, 185, 185, 0.78);
 }
 
 .image-card {
@@ -108,4 +129,14 @@ html{
   width: 100px;
   height: 100px;
   margin: 10px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 700,
+  'GRAD' 200,
+  'opsz' 48;
+  margin: 0 5px 0 0;
+  font-size: 50px;
 }

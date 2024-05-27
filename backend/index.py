@@ -4,6 +4,7 @@ from flask_cors import CORS
 from comparison import comparison
 from color_comparison import compare_color_similarity
 from dominating_color import dominating_color
+import oracledb
 # from text_extraction import extraction_of_text
 import base64
 app = Flask(__name__)
@@ -15,6 +16,8 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+connection = oracledb.connect(user='imageUser', password='imageUser123', dsn='localhost:1521/XEPDB1')
+cursor = connection.cursor()
 
 # Endpoint to upload image
 @app.route('/upload', methods=['POST'])
@@ -36,7 +39,20 @@ def upload_image():
         #similar_image, image_name, cosine_similarity = comparison_obj.image_comparison_and_embedder(file_path)
         similarity_score, text_similarity, text_extracted = comparison_obj.text_comparison_and_embedder(file_path)
         compare_file_path = os.path.join('../data_set/text_test', similarity_score.entity.image_name)
+        cursor.execute('SELECT IMAGE_DATA FROM sys.IMAGES WHERE IMAGE_NAME = :value', {'value': similarity_score.entity.image_name})
+        connection.commit()
+        rows = cursor.fetchall()
+        blob_data = rows[0][0].read();
+        image_base64 = base64.b64encode(blob_data).decode('utf-8')
+
         matching_text_file_path = os.path.join('../data_set/text_test', text_similarity.entity.image_name)
+        cursor.execute('SELECT IMAGE_DATA FROM sys.IMAGES WHERE IMAGE_NAME = :value', {'value': text_similarity.entity.image_name})
+        connection.commit()
+        rows = cursor.fetchall()
+        blob_data = rows[0][0].read();
+        image_base64_2 = base64.b64encode(blob_data).decode('utf-8')
+        # cursor.close()
+        # connection.close()
         # color_similarity = compare_color_similarity(file_path, compare_file_path)
         dominating_color_similarity = dominating_color(file_path, compare_file_path)
         orig_text_extracted = ' '
@@ -44,17 +60,17 @@ def upload_image():
         # orig_text_extracted, fake_text_extracted = extraction_of_text(file_path, compare_file_path)
         common_dom_colors = [[float(num) for num in item[0].tolist()] for item in dominating_color_similarity[1]]
         print("common_dom_colors", common_dom_colors)
-        with open(compare_file_path, 'rb') as f:
-            image_data = f.read()
+        # with open(compare_file_path, 'rb') as f:
+        #     image_data = f.read()
         
-        # Convert the image data to base64
-        image_base64 = base64.b64encode(image_data).decode('utf-8')
+        # # Convert the image data to base64
+        # image_base64 = base64.b64encode(image_data).decode('utf-8')
 
-        with open(matching_text_file_path, 'rb') as f:
-            image_data2 = f.read()
+        # with open(matching_text_file_path, 'rb') as f:
+        #     image_data2 = f.read()
         
-        # Convert the image data to base64
-        image_base64_2 = base64.b64encode(image_data2).decode('utf-8')
+        # # Convert the image data to base64
+        # image_base64_2 = base64.b64encode(image_data2).decode('utf-8')
         return jsonify({'message': 'File successfully uploaded', 'matching-logo': similarity_score.entity.image_name, 
                         'similarity_score': (similarity_score.distance)*100,
                         'text_similarity_score': (text_similarity.distance)*100, 

@@ -90,8 +90,11 @@ image_search
       <li>Text used in logo matched: {message.matching_image_text}</li>
       </ul>
     </div>}
-    {!message && <p style={{color:'gray', textAlign:'center'}}>Yours processed results will appear here</p>}
-    {isProcessing && <div class="loader"></div>}
+    {!message && <p style={{color:'gray', textAlign:'center'}}>{isProcessing ? "Processing....": "Yours processed results will appear here"}</p>}
+    {isProcessing && <div class="progress-moved">
+    <div class="progress-bar2">
+    </div>
+  </div>}
     </div>
     </div>
     </>

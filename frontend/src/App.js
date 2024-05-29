@@ -18,7 +18,7 @@ function App() {
       .then(response => {
         setIsProcessing(false);
         console.log(response.data);
-        setMessage({success: `Total Similarity score: ${response.data.similarity_score.toFixed(2)}% \n Text Similarity: ${response.data.text_similarity_score.toFixed(2)}%`, matching_image: response.data.imageData, matching_colors: response.data.matching_colors, dominating_color_similarity: response.data.dominating_color_similarity, 
+        setMessage({success: `Overall Similarity: ${response.data.similarity_score.toFixed(2)}% \n Text Similarity: ${response.data.text_similarity_score.toFixed(2)}%`, matching_image: response.data.imageData, matching_colors: response.data.matching_colors, dominating_color_similarity: response.data.dominating_color_similarity, 
         matching_image_text: response.data.matching_image_text, uploaded_image_text: response.data.uploaded_image_text, text_matching_image: response.data.imageData2});
       })
       .catch(error => {
@@ -63,9 +63,10 @@ image_search
     {message.error && !isProcessing && <p style={{color:'red'}}>{message.error}</p>}
     </div>
       <div>
-        <p>Matching logo:</p>
+        <p>Matching logos:</p>
       </div>
       <div id="image-card" class="image-card">
+      <div><p>Overall similarity matching logo:</p></div>
         <img id="image" class="result-image" src={`data:image/jpeg;base64, ${message.matching_image}`} alt=""></img>
         <div><p>Common dominating colors:</p></div>
         <div className="color-list">
@@ -80,9 +81,7 @@ image_search
     <div>
         <p>Text matching logo:</p>
       </div>
-      <div id="image-card" class="image-card">
         <img id="image" class="result-image" src={`data:image/jpeg;base64, ${message.text_matching_image}`} alt=""></img>
-      </div>
       </div>
       <ul>
       <li>Similarity of color combination: {message.dominating_color_similarity}%</li>
@@ -90,7 +89,7 @@ image_search
       <li>Text used in logo matched: {message.matching_image_text}</li>
       </ul>
     </div>}
-    {!message && <p style={{color:'gray', textAlign:'center'}}>{isProcessing ? "Processing....": "Yours processed results will appear here"}</p>}
+    {!message && <p style={{color:'gray', textAlign:'center'}}>{isProcessing ? "Processing....": "The outcomes of your processed data will be displayed in this section."}</p>}
     {isProcessing && <div class="progress-moved">
     <div class="progress-bar2">
     </div>

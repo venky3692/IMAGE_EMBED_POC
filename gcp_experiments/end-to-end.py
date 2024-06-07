@@ -58,19 +58,19 @@ def create_embeddings():
 
 def create_vector_index():
     DPIIT_index = aiplatform.MatchingEngineIndex.create_tree_ah_index(
-    display_name = "DPIIT-Search",
+    display_name = "DPIIT-Embedding-Search",
     contents_delta_uri = "gs://dpiit_embedding_dataset",
     dimensions = 1408,
     approximate_neighbors_count = 10,
     )
     
     DPIIT_index_endpoint = aiplatform.MatchingEngineIndexEndpoint.create(
-    display_name = "DPIIT-Search",
+    display_name = "DPIIT-Embedding-Search",
     public_endpoint_enabled = True
     )                      
  
     DPIIT_index_endpoint.deploy_index(
-    index = DPIIT_index, deployed_index_id = "DPIITSearch"
+    index = DPIIT_index, deployed_index_id = "DPIITEmbeddingSearch"
     )
     print("DONE!!")
 # create_embeddings()

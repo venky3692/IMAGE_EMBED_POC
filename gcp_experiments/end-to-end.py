@@ -13,7 +13,8 @@ vertexai.init(project="dp-iit-422513", location="us-central1")
 client = storage.Client(project="dp-iit-422513")
 bucket = client.get_bucket("dpiit_image_dataset")
 model = MultiModalEmbeddingModel.from_pretrained("multimodalembedding")
-json_list =[]
+embedding_json_list =[]
+metadata_json_list= []
 def is_image(blob):
     return any(blob.name.endswith(extension) for extension in ['.jpg', '.jpeg', '.png'])
 
@@ -30,18 +31,30 @@ def create_embeddings():
         image_embeddings = model.get_embeddings(
             image=image
         )
-        data_dict = {
+        metadata_dict = {
             "id":id,
             "blob_name":blob_name,
             "blob_url":blob_url,
             "base64image": base64_image,
             "image_embedding": image_embeddings.image_embedding
         }
-        json_list.append(data_dict)
+        embedding_dict = {
+            "id": id,
+            "embedding": image_embeddings.image_embedding
+        }
+        
+        embedding_json_list.append(embedding_dict)
+        metadata_json_list.append(metadata_dict)
     
-    with open("dpiit_embeddings.json", "w") as json_file:
-        json.dump(json_list,json_file, indent=2)
-        # json_file.write("\n")
+    with open("dpiit_only_embeddings.json", "w") as json_file:
+        # json.dump(json_list,json_file, indent=2)
+        for ele in embedding_json_list:
+            json_file.write(json.dumps(ele)+"\n")
+    
+    with open("dpiit_metadata.json", "a") as json_md_file:
+        json.dump(metadata_json_list,json_md_file, indent=2)
+        # for ele in metadata_json_list:
+        #     json_md_file.write(json.dumps(ele)+"\n")
 
 def create_vector_index():
     DPIIT_index = aiplatform.MatchingEngineIndex.create_tree_ah_index(

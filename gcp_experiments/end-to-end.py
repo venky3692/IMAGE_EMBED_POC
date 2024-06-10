@@ -73,19 +73,7 @@ def create_vector_index():
     index = DPIIT_index, deployed_index_id = "DPIITEmbeddingSearch"
     )
     print("DONE!!")
+
 # create_embeddings()
 create_vector_index()
 
-# from vertexai.vision_models import Image, MultiModalEmbeddingModel
-
-# vertexai.init(project="dp-iit-422513", location="us-central1")
-
-# model = MultiModalEmbeddingModel.from_pretrained("multimodalembedding")
-# image = Image.load_from_file("/home/venkateshriyer/Downloads/levis_elvis-fake.jpg")
-# print(type(image))
-# embeddings = model.get_embeddings(
-#     image=image, 
-#     contextual_text= 'Levis'
-#     )
-
-# print(embeddings)

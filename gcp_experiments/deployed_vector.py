@@ -7,7 +7,6 @@ import json
 
 vertexai.init(project="dp-iit-422513", location="us-central1")
 aiplatform.init(project="dp-iit-422513", location="us-central1")
-# model = GenerativeModel("gemini-pro")
 get_deployed_index = aiplatform.MatchingEngineIndexEndpoint(index_endpoint_name="projects/373208582789/locations/us-central1/indexEndpoints/4237803686471925760")
 
 
@@ -27,15 +26,21 @@ response = get_deployed_index.find_neighbors(
     queries = [query_embeddings],
     num_neighbors = 2
 )
-
 print(response)
 print(response[0][0].id)
 
 
-# def get_response():
-#     f = open('/home/venkateshriyer/IMAGE_EMBED_POC/dpiit_metadata.json')
-#     data = json.load(f)
-#     for i in data:
-#         print(i['id'])
+def get_response():
+    f = open('/home/venkateshriyer/IMAGE_EMBED_POC/dpiit_metadata.json')
+    data = json.load(f)
+    for neighbour in response:
+        for i in neighbour:
+            get_id = i.id
+            for element in data:
+                if element['id'] == get_id:
+                    get_image = element['base64image']
+                    print("get image-->", get_image)
 
-# get_response()
+get_response()
+
+

@@ -19,7 +19,7 @@ def generate_embeddings(img):
     return embeddings.image_embedding
 
 
-query_embeddings = generate_embeddings("/home/venkateshriyer/IMAGE_EMBED_POC/data_set/samsung-fake.PNG")
+query_embeddings = generate_embeddings("/home/venkateshriyer/IMAGE_EMBED_POC/data_set/ffake_fb.png")
 
 response = get_deployed_index.find_neighbors(
     deployed_index_id = "DPIITEmbeddingSearch",
@@ -39,7 +39,7 @@ def get_response():
             for element in data:
                 if element['id'] == get_id:
                     get_image = element['base64image']
-                    print("get image-->", get_image)
+                    # print("get image-->", get_image)
 
 get_response()
 

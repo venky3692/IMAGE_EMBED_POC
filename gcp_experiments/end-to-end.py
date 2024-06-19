@@ -18,7 +18,7 @@ flag_deployment = True
 
 class vectorSearch:
     def __init__(self):
-        vertexai.init(project="dp-iit-422513", location="us-central1")
+        vertexai.init(project="dp-iit-422513", location="asia-south1")
         self.client = storage.Client()
         self.bucket = self.client.get_bucket("dpiit-images-input")
         self.model = MultiModalEmbeddingModel.from_pretrained("multimodalembedding")
@@ -74,7 +74,7 @@ class vectorSearch:
     def create_vector_index(self):
         DPIIT_index = aiplatform.MatchingEngineIndex.create_tree_ah_index(
         display_name = "DPIIT-Embedding-Search",
-        contents_delta_uri = "gs://dpiit_embedding_dataset",
+        contents_delta_uri = "gs://dpiit-json-dataset",
         dimensions = 1408,
         approximate_neighbors_count = 10,
         )
@@ -96,10 +96,10 @@ if __name__ == '__main__':
         embed.create_embeddings()
     if flag_deployment:
         deploy = vectorSearch()
-        json_storage = deploy.push_jsondata_to_storage(bucket_name='dppit-image-embedding-json',
-                                                       source_file_name = './dpiit_only_embeddings.json', 
-                                                       destination_blob_name='dpiit_only_embeddings.json')
-        # deploy.create_vector_index()
+        # json_storage = deploy.push_jsondata_to_storage(bucket_name='dpiit-json-dataset',
+        #                                                source_file_name = './dpiit_only_embeddings.json', 
+        #                                                destination_blob_name='dpiit_only_embeddings.json')
+        deploy.create_vector_index()
 
 
 
